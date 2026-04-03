@@ -2,19 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Papa Louie 2</title>
-
-<script>
-window.RufflePlayer = window.RufflePlayer || {};
-window.addEventListener("DOMContentLoaded", () => {
-    const ruffle = window.RufflePlayer.newest();
-    const player = ruffle.createPlayer();
-    document.getElementById("game").appendChild(player);
-    player.style.width = "800px";
-    player.style.height = "600px";
-    player.load("PapaLouie2.swf");
-});
-</script>
+<title>Papa Louie 2 PT-BR</title>
 
 <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 
@@ -32,6 +20,40 @@ body{
 </head>
 
 <body>
+
 <div id="game"></div>
+
+<script>
+window.RufflePlayer = window.RufflePlayer || {};
+window.addEventListener("DOMContentLoaded", () => {
+    const ruffle = window.RufflePlayer.newest();
+    const player = ruffle.createPlayer();
+    document.getElementById("game").appendChild(player);
+    player.style.width = "800px";
+    player.style.height = "600px";
+    player.load("papalouie2.swf");
+
+    // Tradução automática
+    const traducoes = {
+        "PLAY": "JOGAR",
+        "NEW GAME": "NOVO JOGO",
+        "CONTINUE": "CONTINUAR",
+        "PAUSE": "PAUSA",
+        "DAY": "DIA",
+        "CUSTOMER": "CLIENTE",
+        "SHOP": "LOJA",
+        "MAP": "MAPA"
+    };
+
+    setInterval(() => {
+        document.querySelectorAll("*").forEach(el => {
+            if(traducoes[el.innerText]){
+                el.innerText = traducoes[el.innerText];
+            }
+        });
+    }, 1000);
+});
+</script>
+
 </body>
 </html>
