@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Papa Louie 2 PT-BR</title>
+<title>Papa Louie 2</title>
 
 <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 
@@ -14,14 +14,24 @@ body{
     align-items:center;
     height:100vh;
     margin:0;
+    overflow:hidden;
+}
+
+#container{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 </style>
-
 </head>
 
 <body>
 
-<div id="game"></div>
+<div id="container">
+    <div id="game"></div>
+</div>
 
 <script>
 window.RufflePlayer = window.RufflePlayer || {};
@@ -29,29 +39,23 @@ window.addEventListener("DOMContentLoaded", () => {
     const ruffle = window.RufflePlayer.newest();
     const player = ruffle.createPlayer();
     document.getElementById("game").appendChild(player);
-    player.style.width = "800px";
-    player.style.height = "600px";
+
+    // resolução ORIGINAL do jogo (não mudar)
+    const gameWidth = 800;
+    const gameHeight = 600;
+
+    // calcula escala ideal para caber na tela inteira
+    const scale = Math.min(
+        window.innerWidth / gameWidth,
+        window.innerHeight / gameHeight
+    );
+
+    player.style.width = gameWidth + "px";
+    player.style.height = gameHeight + "px";
+    player.style.transform = `scale(${scale})`;
+    player.style.transformOrigin = "center";
+
     player.load("PapaLouie2.swf");
-
-    // Tradução automática
-    const traducoes = {
-        "PLAY": "JOGAR",
-        "NEW GAME": "NOVO JOGO",
-        "CONTINUE": "CONTINUAR",
-        "PAUSE": "PAUSA",
-        "DAY": "DIA",
-        "CUSTOMER": "CLIENTE",
-        "SHOP": "LOJA",
-        "MAP": "MAPA"
-    };
-
-    setInterval(() => {
-        document.querySelectorAll("*").forEach(el => {
-            if(traducoes[el.innerText]){
-                el.innerText = traducoes[el.innerText];
-            }
-        });
-    }, 1000);
 });
 </script>
 
