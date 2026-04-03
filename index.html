@@ -4,7 +4,18 @@
 <meta charset="UTF-8">
 <title>Papa Louie 2</title>
 
-<!-- Ruffle -->
+<script>
+window.RufflePlayer = window.RufflePlayer || {};
+window.addEventListener("DOMContentLoaded", () => {
+    const ruffle = window.RufflePlayer.newest();
+    const player = ruffle.createPlayer();
+    document.getElementById("game").appendChild(player);
+    player.style.width = "800px";
+    player.style.height = "600px";
+    player.load("PapaLouie2.swf");
+});
+</script>
+
 <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 
 <style>
@@ -21,11 +32,6 @@ body{
 </head>
 
 <body>
-
-<ruffle-player 
-    src="PapaLouie2.swf" 
-    style="width:800px; height:600px;">
-</ruffle-player>
-
+<div id="game"></div>
 </body>
 </html>
