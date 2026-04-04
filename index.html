@@ -2,49 +2,82 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Papa Louie 2</title>
+<title>Papa Louie Portal</title>
 
 <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 
 <style>
 body{
-    background:black;
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    margin:0;
-    overflow:hidden;
 }
 
-#container{
+/* MENU */
+#menu{
+    text-align:center;
+}
+
+button{
+    display:block;
+    width:260px;
+    margin:15px auto;
+    padding:15px;
+    font-size:18px;
+    background:#ffb300;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ff9800;
+}
+
+/* JOGO */
+#gameContainer{
+    display:none;
     width:100vw;
     height:100vh;
-    display:flex;
     justify-content:center;
     align-items:center;
+    background:black;
 }
 </style>
 </head>
 
 <body>
 
-<div id="container">
+<!-- MENU INICIAL -->
+<div id="menu">
+    <h1>Papa Louie Portal 🍔</h1>
+    <button onclick="startGame('PapaLouie2.swf')">Papa Louie 2</button>
+    <button onclick="startGame('PapaLouie3.swf')">Papa Louie 3</button>
+</div>
+
+<!-- AREA DO JOGO -->
+<div id="gameContainer">
     <div id="game"></div>
 </div>
 
 <script>
-window.RufflePlayer = window.RufflePlayer || {};
-window.addEventListener("DOMContentLoaded", () => {
+function startGame(file){
+
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("gameContainer").style.display = "flex";
+
     const ruffle = window.RufflePlayer.newest();
     const player = ruffle.createPlayer();
     document.getElementById("game").appendChild(player);
 
-    // resolução ORIGINAL do jogo (não mudar)
     const gameWidth = 800;
     const gameHeight = 600;
 
-    // calcula escala ideal para caber na tela inteira
     const scale = Math.min(
         window.innerWidth / gameWidth,
         window.innerHeight / gameHeight
@@ -55,8 +88,8 @@ window.addEventListener("DOMContentLoaded", () => {
     player.style.transform = `scale(${scale})`;
     player.style.transformOrigin = "center";
 
-    player.load("PapaLouie2.swf");
-});
+    player.load(file);
+}
 </script>
 
 </body>
