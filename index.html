@@ -12,31 +12,42 @@ body{
     background:#111;
     color:white;
     font-family:Arial, Helvetica, sans-serif;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
 }
 
 /* MENU */
 #menu{
     text-align:center;
+    padding-top:40px;
 }
 
-button{
-    display:block;
-    width:260px;
-    margin:15px auto;
+.games{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-top:30px;
+}
+
+.card{
+    background:#222;
     padding:15px;
-    font-size:18px;
+    border-radius:15px;
+    width:220px;
+}
+
+.card img{
+    width:100%;
+    border-radius:10px;
+}
+
+.card button{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    font-size:16px;
     background:#ffb300;
     border:none;
     border-radius:10px;
     cursor:pointer;
-}
-
-button:hover{
-    background:#ff9800;
 }
 
 /* JOGO */
@@ -47,32 +58,59 @@ button:hover{
     justify-content:center;
     align-items:center;
     background:black;
+    position:relative;
+}
+
+#backBtn{
+    position:absolute;
+    top:15px;
+    left:15px;
+    padding:10px 15px;
+    font-size:16px;
+    background:#ffb300;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MENU INICIAL -->
+<!-- MENU -->
 <div id="menu">
     <h1>Papa Louie Portal 🍔</h1>
-    <button onclick="startGame('PapaLouie2.swf')">Papa Louie 2</button>
-    <button onclick="startGame('PapaLouie3.swf')">Papa Louie 3</button>
+
+    <div class="games">
+
+        <div class="card">
+            <img src="pl2.jpg">
+            <button onclick="startGame('PapaLouie2.swf')">Jogar Papa Louie 2</button>
+        </div>
+
+        <div class="card">
+            <img src="pl3.jpg">
+            <button onclick="startGame('PapaLouie3.swf')">Jogar Papa Louie 3</button>
+        </div>
+
+    </div>
 </div>
 
 <!-- AREA DO JOGO -->
 <div id="gameContainer">
+    <button id="backBtn" onclick="goBack()">⬅ Voltar</button>
     <div id="game"></div>
 </div>
 
 <script>
-function startGame(file){
+let player;
 
+function startGame(file){
     document.getElementById("menu").style.display = "none";
     document.getElementById("gameContainer").style.display = "flex";
 
     const ruffle = window.RufflePlayer.newest();
-    const player = ruffle.createPlayer();
+    player = ruffle.createPlayer();
     document.getElementById("game").appendChild(player);
 
     const gameWidth = 800;
@@ -89,6 +127,10 @@ function startGame(file){
     player.style.transformOrigin = "center";
 
     player.load(file);
+}
+
+function goBack(){
+    location.reload(); // volta pro menu limpando o jogo
 }
 </script>
 
