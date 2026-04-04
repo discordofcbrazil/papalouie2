@@ -2,55 +2,71 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Papa Louie - Portal</title>
-
+<title>Papa Louie Portal</title>
 <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 
 <style>
 body{
     margin:0;
-    background:#010924;
-    color:black;
+    background:linear-gradient(180deg,#1a1a1a,#000);
+    color:white;
     font-family:Arial, Helvetica, sans-serif;
+    overflow:hidden;
 }
 
-/* MENU */
-#menu{
+/* TITULO */
+h1{
     text-align:center;
-    padding-top:40px;
+    margin-top:30px;
+    font-size:42px;
+    animation:fadeDown 1s ease;
 }
 
+/* GRID DE JOGOS */
 .games{
     display:flex;
     justify-content:center;
     gap:40px;
-    margin-top:30px;
+    margin-top:40px;
 }
 
 .card{
-    background:#25399c;
+    background:#222;
     padding:15px;
-    border-radius:15px;
+    border-radius:18px;
     width:220px;
+    transition:.3s;
+    box-shadow:0 0 15px rgba(0,0,0,.5);
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.05);
+    box-shadow:0 0 25px rgba(255,180,0,.6);
 }
 
 .card img{
     width:100%;
-    border-radius:10px;
+    border-radius:12px;
 }
 
 .card button{
     width:100%;
-    margin-top:10px;
-    padding:10px;
+    margin-top:12px;
+    padding:12px;
     font-size:16px;
-    background:#239e2f;
+    background:linear-gradient(45deg,#ffb300,#ff7300);
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     cursor:pointer;
+    color:white;
+    font-weight:bold;
 }
 
-/* JOGO */
+.card button:hover{
+    transform:scale(1.05);
+}
+
+/* AREA DO JOGO */
 #gameContainer{
     display:none;
     width:100vw;
@@ -61,76 +77,113 @@ body{
     position:relative;
 }
 
-#backBtn{
+/* BOTÕES DO JOGO */
+.topBtns{
     position:absolute;
     top:15px;
     left:15px;
-    padding:10px 15px;
+    display:flex;
+    gap:10px;
+}
+
+.topBtns button{
+    padding:10px 14px;
     font-size:16px;
-    background:#1a1a1a;
+    background:linear-gradient(45deg,#ffb300,#ff7300);
     border:none;
     border-radius:10px;
     cursor:pointer;
+    color:white;
+    font-weight:bold;
+}
+
+/* ANIMAÇÃO */
+@keyframes fadeDown{
+    from{opacity:0; transform:translateY(-20px)}
+    to{opacity:1}
 }
 </style>
 </head>
 
 <body>
 
-<!-- MENU -->
 <div id="menu">
-    <h1>Selecione um Jogo</h1>
+    <h1>Papa Louie Portal 🍔</h1>
 
     <div class="games">
+        <div class="card">
+            <img src="pl1.jpg">
+            <button onclick="startGame('PapaLouie1.swf')">Papa Louie 1</button>
+        </div>
 
         <div class="card">
             <img src="pl2.jpg">
-            <button onclick="startGame('PapaLouie2.swf')">Jogar</button>
+            <button onclick="startGame('PapaLouie2.swf')">Papa Louie 2</button>
         </div>
 
         <div class="card">
             <img src="pl3.jpg">
-            <button onclick="startGame('PapaLouie3.swf')">Jogar</button>
+            <button onclick="startGame('PapaLouie3.swf')">Papa Louie 3</button>
         </div>
-
     </div>
 </div>
 
-<!-- AREA DO JOGO -->
 <div id="gameContainer">
-    <button id="backBtn" onclick="goBack()">⬅ Voltar</button>
+    <div class="topBtns">
+        <button id="backBtn" onclick="goBack()">⬅ Voltar</button>
+        <button onclick="toggleFullscreen()">🔲 Tela cheia</button>
+    </div>
     <div id="game"></div>
 </div>
 
 <script>
 let player;
+let fullscreen=false;
 
 function startGame(file){
-    document.getElementById("menu").style.display = "none";
-    document.getElementById("gameContainer").style.display = "flex";
+    document.getElementById("menu").style.display="none";
+    document.getElementById("gameContainer").style.display="flex";
 
     const ruffle = window.RufflePlayer.newest();
     player = ruffle.createPlayer();
     document.getElementById("game").appendChild(player);
 
-    const gameWidth = 800;
-    const gameHeight = 600;
-
-    const scale = Math.min(
-        window.innerWidth / gameWidth,
-        window.innerHeight / gameHeight
-    );
-
-    player.style.width = gameWidth + "px";
-    player.style.height = gameHeight + "px";
-    player.style.transform = `scale(${scale})`;
-    player.style.transformOrigin = "center";
-
+    resizeGame();
     player.load(file);
 }
 
+function resizeGame(){
+    const gameWidth=800;
+    const gameHeight=600;
+
+    const scale=Math.min(
+        window.innerWidth/gameWidth,
+        window.innerHeight/gameHeight
+    );
+
+    player.style.width=gameWidth+"px";
+    player.style.height=gameHeight+"px";
+    player.style.transform=`scale(${scale})`;
+    player.style.transformOrigin="center";
+}
+
+window.addEventListener("resize", ()=>{ if(player) resizeGame(); });
+
 function goBack(){
-    location.reload(); // volta pro menu limpando o jogo
+    location.reload();
+}
+
+/* FULLSCREEN REAL */
+function toggleFullscreen(){
+    if(!fullscreen){
+        document.documentElement.requestFullscreen();
+        document.getElementById("backBtn").style.display="none";
+        fullscreen=true;
+    }else{
+        document.exitFullscreen();
+        document.getElementById("backBtn").style.display="block";
+        fullscreen=false;
+    }
 }
 </script>
 
